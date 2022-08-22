@@ -86,5 +86,78 @@
 <!-- Вставялем в themes.liquid -->
 {%- render 'modal-masko' -%} 
 
-<!-- Еще вариант
-https://codepen.io/imprakash/pen/GgNMXO -->
+<!-- 
+  
+############### Вариант без JS ###################
+
+Создаем Asset css и закидываем в него код ниже
+
+.overlayMasko {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+  visibility: hidden;
+  opacity: 0;
+}
+.overlayMasko:target {
+  visibility: visible;
+  opacity: 1;
+}
+
+  .popupMasko {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 50px 30px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 1px 3px;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-height: 90% !important;
+  width: 85%;
+  overflow: auto;
+    z-index:1000;
+}
+.popupMasko .closeMasko {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  transition: all 200ms;
+  font-size: 40px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #333;
+}
+.popupMasko .closeMasko:hover {
+  color: gray;
+}
+
+@media screen and (max-width: 700px){
+
+  .popupMasko{
+    padding: 35px 15px;
+  }
+} -->
+
+<!-- Создаем сниппет модального окна и рендерим его в theme.liquid -->
+
+<div id="price1" class="overlayMasko">
+	<div class="popupMasko">
+		<a class="closeMasko" href="#resetToThis">&times;</a>
+		<div>
+			{{ pages.modal-wash.content }}
+		</div>
+	</div>
+</div>
+
+{{ 'modal-masko.css' | asset_url | stylesheet_tag }}
+
+ <!-- Вставляем кнопку подставляя классы стилей. Важно! 
+ Будет работать только если написать сначала #price 
+ и потом подставить блок текста -->
+
+<a class="btn btn--tertiary btn--small" href="#price{{ block.settings.button_link }}">{{ block.settings.button_label }}</a>
